@@ -127,6 +127,19 @@ public class DoublyLinkedList {
 		size = 0;
 	}
 	
+	public void display() {
+		if(head == null) {
+			System.out.println("History is empty.");
+			return;
+		}
+		Node current = head;
+		while(current != null) {
+			System.out.print(current.getTitle() + " -> ");
+			current = current.getNext();
+		}
+		System.out.println("NULL");
+	}
+	
 	public int getSize() {
 		return size;
 	}

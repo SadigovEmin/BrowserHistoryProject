@@ -3,7 +3,7 @@ package tests;
 import browserhistory.DoublyLinkedList;
 import browserhistory.Node;
 
-public class NodeTest2 {
+public class DoublyLinkedListTest {
 	public static void main(String[] args) {
 		
 		DoublyLinkedList list = new DoublyLinkedList();
@@ -19,6 +19,7 @@ public class NodeTest2 {
 		list.addLast(github);
 		list.addLast(udemy);
 		list.addLast(coursera);
+		list.display();
 		
 		System.out.println("Initial size: " + list.getSize());
 		
@@ -69,5 +70,9 @@ public class NodeTest2 {
         System.out.println("Head: " + list.getHead());
         System.out.println("Tail: " + list.getTail());
         System.out.println("Size: " + list.getSize());
+        System.out.println("\n \n \n");
+        
+        System.out.println("Test 6: Display all Pages");
+        list.display();
 	}
 }
