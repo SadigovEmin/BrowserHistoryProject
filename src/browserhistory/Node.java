@@ -48,5 +48,12 @@ public class Node {
 	public void setNext(Node next) {
 		this.next = next;
 	}
+	
+	@Override
+	public String toString() {
+		return "Url:  " + this.url +
+					" \ntitle: " + this.title 
+					+ " \ntimestamp visited: " + this.visitTime;
+	}
 
 }
