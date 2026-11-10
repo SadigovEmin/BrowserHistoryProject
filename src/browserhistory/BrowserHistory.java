@@ -15,10 +15,15 @@ public class BrowserHistory {
 	} 
 	
 	public void visit(String url, String title) {
+		Node newPage = new Node(url, title);
+		if (currentPage == null) {
+	        history.addLast(newPage);
+	        currentPage = newPage;
+	        return;
+	    }
 		while(currentPage.getNext() != null) {
 			history.removeNode(currentPage.getNext());
 		}
-		Node newPage = new Node(url, title);
 			
 		history.addLast(newPage);
 			
@@ -78,6 +83,12 @@ public class BrowserHistory {
 		System.out.println("URL: " + currentPage.getUrl());
 		System.out.println("Title: " + currentPage.getTitle());
 		System.out.println("Visit Time: " + currentPage.getVisitTime());
+	}
+	
+	public void deleteHistory() {
+		history.clear();
+		currentPage = null;
+		System.out.println("Browser history has successfully been deleted.");
 	}
 	
 	public int getHistorySize() {

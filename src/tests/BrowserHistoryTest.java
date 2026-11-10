@@ -106,5 +106,27 @@ public class BrowserHistoryTest {
 		
 		System.out.println("\nTest 6: Current Page Information");
 		branchTest.currentPage();
+		System.out.println("\n \n \n");
+		
+		System.out.println("Test 7: Deleting all history");
+		BrowserHistory deletedBrowser = new BrowserHistory(
+                "https://www.google.com", "Google");
+
+        deletedBrowser.visit("https://www.youtube.com", "YouTube");
+        deletedBrowser.visit("https://github.com", "GitHub");
+
+        System.out.println("Before deletion:");
+        deletedBrowser.display_history();
+
+        System.out.println("\nDeleting history:");
+        deletedBrowser.deleteHistory();
+
+        System.out.println("\nVisiting a new page after deletion:");
+        deletedBrowser.visit("https://www.reddit.com", "Reddit");
+
+        deletedBrowser.display_history();
+
+        System.out.println("\nCurrent page:");
+        deletedBrowser.currentPage();
 	}
 }
