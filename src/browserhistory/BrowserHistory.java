@@ -40,8 +40,37 @@ public class BrowserHistory {
 		System.out.println("NULL");
 	}
 	
+	public String back(int steps) {
+		if(steps < 0) {
+			throw new IllegalArgumentException("Steps cannot be negative!");
+			
+		}
+		for (int i = 0; i < steps; i++) {
+			if(currentPage.getPrev() == null) {
+				break;
+			}
+			currentPage = currentPage.getPrev();
+		}
+		return currentPage.getUrl();
+	}
+	
+	public String forward(int steps) {
+		if(steps < 0) {
+			throw new IllegalArgumentException("Steps cannot be negative!");
+		}
+		for(int i = 0; i < steps; i++) {
+			if(currentPage.getNext() == null) {
+				break;
+			}
+			currentPage = currentPage.getNext();
+		
+		}
+		return currentPage.getUrl();
+	}
+	
 	public int getHistorySize() {
 		return history.getSize();
 	}
+	
 
 }
