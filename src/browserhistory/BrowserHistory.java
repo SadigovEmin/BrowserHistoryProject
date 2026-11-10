@@ -7,23 +7,23 @@ public class BrowserHistory {
 	
 	private static final int MAX_CAPACITY = 50;
 	
-	public BrowserHistory(String homepage) {
+	public BrowserHistory(String homepageUrl, String homepageTitle) {
 		history = new DoublyLinkedList();
-		Node homePageNode = new Node(homepage, homepage);
+		Node homePageNode = new Node(homepageUrl, homepageTitle);
 		history.addLast(homePageNode);
 		currentPage = homePageNode;
 	} 
 	
-	public void visit(String url) {
+	public void visit(String url, String title) {
 		while(currentPage.getNext() != null) {
 			history.removeNode(currentPage.getNext());
 		}
-		Node newPage = new Node(url, url);
+		Node newPage = new Node(url, title);
 			
 		history.addLast(newPage);
 			
 		currentPage = newPage;
-		if(history.getSize() > MAX_CAPACITY) history.removeFirst();
+		if(history.getSize() > MAX_CAPACITY) history.removeFirst(); //Capacity requirement
 			
 		
 	}
@@ -66,6 +66,18 @@ public class BrowserHistory {
 		
 		}
 		return currentPage.getUrl();
+	}
+	
+	public void currentPage() {
+		if(currentPage == null) {
+			System.out.println("No current page. ");
+			return;
+		}
+		System.out.println("\nCurrent Page Information");
+		System.out.println("----------------------------");
+		System.out.println("URL: " + currentPage.getUrl());
+		System.out.println("Title: " + currentPage.getTitle());
+		System.out.println("Visit Time: " + currentPage.getVisitTime());
 	}
 	
 	public int getHistorySize() {

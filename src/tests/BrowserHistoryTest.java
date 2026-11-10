@@ -2,19 +2,19 @@ package tests;
 import browserhistory.BrowserHistory;
 public class BrowserHistoryTest {
 	public static void main(String[] args) {
-		BrowserHistory browser = new BrowserHistory("Google");
-		browser.visit("Youtube");
-		browser.visit("Github");
-		browser.visit("Linkedin");
+		BrowserHistory browser = new BrowserHistory("https://google.com","Google");
+		browser.visit("https://youtube.com","Youtube");
+		browser.visit("https://github.com","Github");
+		browser.visit("https://linkedin.com","Linkedin");
 		
 		System.out.println("Test 1: Visited pages");
 		browser.display_history();
 		System.out.println("\n \n \n");
 		
 		System.out.println("Test 2: Exceeding maximum capacity");
-		BrowserHistory newBrowser = new BrowserHistory("Home");
+		BrowserHistory newBrowser = new BrowserHistory("https://homepage.com","Home");
 		for(int i=1; i <= 60; i++) {
-			newBrowser.visit("Page " + i);
+			newBrowser.visit("https://page"+i+".com","Page " + i);
 		}
 		newBrowser.display_history();
 		System.out.println("History size: " + newBrowser.getHistorySize());
@@ -82,11 +82,11 @@ public class BrowserHistoryTest {
 		
 		System.out.println("Test 5: Branching history");
 
-		BrowserHistory branchTest = new BrowserHistory("Google");
+		BrowserHistory branchTest = new BrowserHistory("https://google.com","Google");
 
-		branchTest.visit("YouTube");
-		branchTest.visit("GitHub");
-		branchTest.visit("Reddit");
+		branchTest.visit("https://youtube.com","YouTube");
+		branchTest.visit("https://github.com","GitHub");
+		branchTest.visit("https://reddit.com","Reddit");
 
 		System.out.println("Original history:");
 		branchTest.display_history();
@@ -95,7 +95,7 @@ public class BrowserHistoryTest {
 		branchTest.back(2);
 		branchTest.display_history();
 
-		branchTest.visit("Stack Overflow");
+		branchTest.visit("https://stackoverflow.com","Stack Overflow");
 
 		System.out.println("After visiting Stack Overflow:");
 		branchTest.display_history();
@@ -104,5 +104,7 @@ public class BrowserHistoryTest {
 		System.out.println("Current page: " + branchTest.forward(1));
 		branchTest.display_history();
 		
+		System.out.println("\nTest 6: Current Page Information");
+		branchTest.currentPage();
 	}
 }
