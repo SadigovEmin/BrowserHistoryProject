@@ -19,6 +19,14 @@ public class Node {
 		this.prev=null;
 		this.next=null;
 	}
+	public Node(String url, String title, LocalDateTime visitTime) {
+		this.url = url;
+		this.title = title;
+		this.visitTime = visitTime;
+		
+		this.prev=null;
+		this.next=null;
+	}
 	
 	public String getUrl() {
 		return this.url;
