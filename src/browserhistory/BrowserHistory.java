@@ -82,16 +82,17 @@ public class BrowserHistory {
 		return currentPage.getUrl();
 	}
 	
-	public void currentPage() {
+	public Node currentPage() {
 		if(currentPage == null) {
 			System.out.println("No current page. ");
-			return;
+			return null;
 		}
 		System.out.println("\nCurrent Page Information");
 		System.out.println("----------------------------");
 		System.out.println("URL: " + currentPage.getUrl());
 		System.out.println("Title: " + currentPage.getTitle());
 		System.out.println("Visit Time: " + currentPage.getVisitTime());
+		return currentPage;
 	}
 	
 	public void deleteHistory() {
@@ -122,8 +123,13 @@ public class BrowserHistory {
 	}
 	
 	public void importHistory(String filename) {
+		DoublyLinkedList importedHistory = new DoublyLinkedList();
+		Node importedCurrentPage = null;
+		boolean currentPageFound = false;
+		
 		try(BufferedReader reader = Files.newBufferedReader(
 				Path.of(filename), StandardCharsets.UTF_8)){
+			deletedPages.clear();
 			history.clear();
 			currentPage = null;
 			
@@ -131,18 +137,43 @@ public class BrowserHistory {
 			
 			while((line = reader.readLine()) != null) {
 				String[] record = line.split("\t", -1);
+				if(record.length != 4) throw new IllegalArgumentException("Invalid record format");
+				
 				String url = record[0];
 				String title = record[1];
+				if(url.isBlank() || title.isBlank()) {
+					throw new IllegalArgumentException("URL and title cannot be empty.");
+				}
 				LocalDateTime visitTime = LocalDateTime.parse(record[2]);
+				
+				if (!record[3].equals("true") && !record[3].equals("false")) {
+					throw new IllegalArgumentException("Invalid current page flag.");
+				}
 				boolean isCurrent = Boolean.parseBoolean(record[3]);
+				
+				if(isCurrent && currentPageFound) {
+					throw new IllegalArgumentException("Multiple current pages found.");
+				}
+				
+				if(importedHistory.getSize() >= MAX_CAPACITY) {
+					throw new IllegalArgumentException("History cannot exceed 50 pages.");
+				}
 				
 				Node newPage = new Node(url, title, visitTime);
 				history.addLast(newPage);
 				if(isCurrent) {
-					currentPage = newPage;
+					importedCurrentPage = newPage;
+					currentPageFound = true;
 				}
 				
 			}
+			
+			if(importedHistory.getSize() > 0 && !currentPageFound) {
+				throw new IllegalArgumentException("No current page found in imported history.");
+			}
+			history = importedHistory;
+			currentPage = importedCurrentPage;
+			deletedPages.clear();
 			System.out.println("History successfully imported.");
 			
 			

@@ -46,6 +46,9 @@ public class DeleteSpecificURLandRestoreTest {
 	    System.out.println("\n\nTest Deletions of Duplicate Urls: ");
 	    testDeleteDuplicateUrls();
 	    
+	    System.out.println("\n\nTest Restore at Maximum Capacity: ");
+	    testRestoreAtMaximumCapacity();
+	    
 		
 	}
 	
@@ -115,5 +118,48 @@ public class DeleteSpecificURLandRestoreTest {
 	    System.out.println("\nAfter restoring second time:");
 	    browser.display_history();
 	}
+	
+
+	public static void testRestoreAtMaximumCapacity() {
+
+	    BrowserHistory browser = new BrowserHistory(
+	            "https://google.com", "Google"
+	    );
+	
+	    for (int i = 1; i <= 49; i++) {
+	        browser.visit(
+	                "https://example.com/page" + i,
+	                "Page " + i
+	        );
+	    }
+	
+	    System.out.println("Initial size: "
+	            + browser.getHistorySize());
+	
+	    browser.deleteUrl("https://example.com/page25");
+	
+	    System.out.println("After deletion: "
+	            + browser.getHistorySize());
+	
+	    browser.visit("https://newpage.com", "New Page");
+	
+	    System.out.println("Before restoration: "
+	            + browser.getHistorySize());
+	    
+	    boolean restored = browser.restoreDeletedPage();
+	
+	    System.out.println("Restored: " + restored);
+	    System.out.println("Final size: "
+	            + browser.getHistorySize());
+	
+	    System.out.println("Current page:");
+	    browser.currentPage();
+	
+	    System.out.println("After going back: "
+	            + browser.back(1));
+	    browser.display_history();
+	    System.out.println("Because of restoration the first node is deleted which is Google.");
+	}
+
 
 }
