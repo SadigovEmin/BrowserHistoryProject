@@ -11,6 +11,7 @@ public class BrowserHistory {
 	
 	private DoublyLinkedList history;
 	private Node currentPage;
+	private DeletedHistoryStack deletedPages;
 	
 	private static final int MAX_CAPACITY = 50;
 	
@@ -19,6 +20,7 @@ public class BrowserHistory {
 		Node homePageNode = new Node(homepageUrl, homepageTitle);
 		history.addLast(homePageNode);
 		currentPage = homePageNode;
+		deletedPages = new DeletedHistoryStack();
 	} 
 	
 	public void visit(String url, String title) {
@@ -96,6 +98,7 @@ public class BrowserHistory {
 		history.clear();
 		currentPage = null;
 		System.out.println("Browser history has successfully been deleted.");
+		deletedPages.clear();
 	}
 	
 	public void exportHistory(String filename) {
@@ -147,6 +150,91 @@ public class BrowserHistory {
 			System.out.println("Error while importing history: " + e.getMessage());
 		}
 	}
+	
+
+public int deleteUrl(String url) {
+
+    if (url == null) {
+        throw new IllegalArgumentException("URL cannot be null.");
+    }
+
+    Node current = history.getHead();
+    int index = 0;
+    int deletedCount = 0;
+
+    while (current != null) {
+
+        Node next = current.getNext();
+
+        if (current.getUrl().equals(url)) {
+
+            boolean wasCurrent = (current == currentPage);
+
+            Node previous = current.getPrev();
+
+            history.removeNode(current);
+
+            DeletedPage deletedPage =
+                    new DeletedPage(current, index, wasCurrent);
+
+            deletedPages.push(deletedPage);
+
+            if (wasCurrent) {
+                if (next != null) {
+                    currentPage = next;
+                } else {
+                    currentPage = previous;
+                }
+            }
+
+            deletedCount++;
+
+        } else {
+            index++;
+        }
+
+        current = next;
+    }
+
+    return deletedCount;
+}
+
+
+public boolean restoreDeletedPage() {
+
+    DeletedPage deletedPage = deletedPages.pop();
+
+    if (deletedPage == null) {
+        return false;
+    }
+
+    Node page = deletedPage.getPage();
+
+
+    int index = Math.min(
+            deletedPage.getOriginalIndex(),
+            history.getSize()
+    );
+
+    history.insertAt(index, page);
+
+    if (deletedPage.wasCurrent() || currentPage == null) {
+        currentPage = page;
+    }
+
+    if (history.getSize() > MAX_CAPACITY) {
+
+        Node removed = history.removeFirst();
+
+        if (currentPage == removed) {
+            currentPage = history.getHead();
+        }
+    }
+
+    return true;
+}
+
+
 	
 	
 	
