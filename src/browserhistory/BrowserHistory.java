@@ -160,7 +160,7 @@ public class BrowserHistory {
 				}
 				
 				Node newPage = new Node(url, title, visitTime);
-				history.addLast(newPage);
+				importedHistory.addLast(newPage);
 				if(isCurrent) {
 					importedCurrentPage = newPage;
 					currentPageFound = true;
