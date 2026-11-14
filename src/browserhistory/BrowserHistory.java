@@ -15,6 +15,10 @@ public class BrowserHistory {
 	
 	private static final int MAX_CAPACITY = 50;
 	
+	public BrowserHistory(String homepageUrl) {
+	    this(homepageUrl, homepageUrl);
+	}
+	
 	public BrowserHistory(String homepageUrl, String homepageTitle) {
 		history = new DoublyLinkedList();
 		Node homePageNode = new Node(homepageUrl, homepageTitle);
@@ -22,6 +26,10 @@ public class BrowserHistory {
 		currentPage = homePageNode;
 		deletedPages = new DeletedHistoryStack();
 	} 
+	
+	public void visit(String url) {
+	    visit(url, url);
+	}
 	
 	public void visit(String url, String title) {
 		Node newPage = new Node(url, title);
@@ -129,9 +137,6 @@ public class BrowserHistory {
 		
 		try(BufferedReader reader = Files.newBufferedReader(
 				Path.of(filename), StandardCharsets.UTF_8)){
-			deletedPages.clear();
-			history.clear();
-			currentPage = null;
 			
 			String line;
 			
@@ -183,52 +188,52 @@ public class BrowserHistory {
 	}
 	
 
-public int deleteUrl(String url) {
-
-    if (url == null) {
-        throw new IllegalArgumentException("URL cannot be null.");
-    }
-
-    Node current = history.getHead();
-    int index = 0;
-    int deletedCount = 0;
-
-    while (current != null) {
-
-        Node next = current.getNext();
-
-        if (current.getUrl().equals(url)) {
-
-            boolean wasCurrent = (current == currentPage);
-
-            Node previous = current.getPrev();
-
-            history.removeNode(current);
-
-            DeletedPage deletedPage =
-                    new DeletedPage(current, index, wasCurrent);
-
-            deletedPages.push(deletedPage);
-
-            if (wasCurrent) {
-                if (next != null) {
-                    currentPage = next;
-                } else {
-                    currentPage = previous;
-                }
-            }
-
-            deletedCount++;
-
-        } else {
-            index++;
-        }
-
-        current = next;
-    }
-
-    return deletedCount;
-}
+	public int deleteUrl(String url) {
+	
+	    if (url == null) {
+	        throw new IllegalArgumentException("URL cannot be null.");
+	    }
+	
+	    Node current = history.getHead();
+	    int index = 0;
+	    int deletedCount = 0;
+	
+	    while (current != null) {
+	
+	        Node next = current.getNext();
+	
+	        if (current.getUrl().equals(url)) {
+	
+	            boolean wasCurrent = (current == currentPage);
+	
+	            Node previous = current.getPrev();
+	
+	            history.removeNode(current);
+	
+	            DeletedPage deletedPage =
+	                    new DeletedPage(current, index, wasCurrent);
+	
+	            deletedPages.push(deletedPage);
+	
+	            if (wasCurrent) {
+	                if (next != null) {
+	                    currentPage = next;
+	                } else {
+	                    currentPage = previous;
+	                }
+	            }
+	
+	            deletedCount++;
+	
+	        } else {
+	            index++;
+	        }
+	
+	        current = next;
+	    }
+	
+	    return deletedCount;
+	}
 
 
 public boolean restoreDeletedPage() {

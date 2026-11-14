@@ -119,7 +119,7 @@ public class DoublyLinkedList {
 			Node nextNode = current.getNext();
 			
 			current.setPrev(null);
-			current.setPrev(null);
+			current.setNext(null);
 			current = nextNode;
 		}
 		head = null;
@@ -153,52 +153,52 @@ public class DoublyLinkedList {
 	}
 	
 
-public void insertAt(int index, Node newNode) {
+	public void insertAt(int index, Node newNode) {
 
-    if (index < 0 || index > size) {
-        throw new IndexOutOfBoundsException("Invalid index: " + index);
-    }
-
-    if (newNode == null) {
-        throw new IllegalArgumentException("Node cannot be null.");
-    }
-
-    Node check = head;
-
-    while (check != null) {
-        if (check == newNode) {
-            throw new IllegalArgumentException("Node already exists in the list.");
-        }
-
-        check = check.getNext();
-    }
-
-    if (index == size) {
-        addLast(newNode);
-        return;
-    }
-
-    Node current = head;
-
-    for (int i = 0; i < index; i++) {
-        current = current.getNext();
-    }
-
-    Node previous = current.getPrev();
-
-    newNode.setPrev(previous);
-    newNode.setNext(current);
-
-    if (previous == null) {
-        head = newNode;
-    } else {
-        previous.setNext(newNode);
-    }
-
-    current.setPrev(newNode);
-
-    size++;
-}
+	    if (index < 0 || index > size) {
+	        throw new IndexOutOfBoundsException("Invalid index: " + index);
+	    }
+	
+	    if (newNode == null) {
+	        throw new IllegalArgumentException("Node cannot be null.");
+	    }
+	
+	    Node check = head;
+	
+	    while (check != null) {
+	        if (check == newNode) {
+	            throw new IllegalArgumentException("Node already exists in the list.");
+	        }
+	
+	        check = check.getNext();
+	    }
+	
+	    if (index == size) {
+	        addLast(newNode);
+	        return;
+	    }
+	
+	    Node current = head;
+	
+	    for (int i = 0; i < index; i++) {
+	        current = current.getNext();
+	    }
+	
+	    Node previous = current.getPrev();
+	
+	    newNode.setPrev(previous);
+	    newNode.setNext(current);
+	
+	    if (previous == null) {
+	        head = newNode;
+	    } else {
+	        previous.setNext(newNode);
+	    }
+	
+	    current.setPrev(newNode);
+	
+	    size++;
+	}
 
 	
 
